@@ -51,6 +51,7 @@ int number_of_moves(struct game_state start) {
                         success++;
                         if(success==15){
                             // printf("correct!\n");
+                            free_list(q.data);
                             return curr.num_steps;
                         }
                         correct++;
