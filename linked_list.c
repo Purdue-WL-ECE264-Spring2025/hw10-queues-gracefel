@@ -38,23 +38,27 @@ size_t remove_from_head(struct linked_list *list) {
 size_t remove_from_tail(struct linked_list *list) {
   struct list_node * p = list->head;
   if(p->next==NULL){
+    size_t val = p->value;
+    free(p);
     list->head= NULL;
-    return p->value;
+    return val;
   }
   while (p->next->next != NULL){
-    p->next = p->next->next;
+    p = p->next;
   }
   size_t value = p->next->value;
   free(p->next);
+  p->next = NULL;
   return value;
 }
 
-void free_list(struct linked_list list) { //had to add a * to list???
+void free_list(struct linked_list list) { 
   struct list_node * p = list.head;
   while (list.head != NULL){
     list.head = p->next;
     free(p);
-    p->next = p->next->next;
+    p = list.head;
+    // p->next = p->next->next;
   }
 }
 
