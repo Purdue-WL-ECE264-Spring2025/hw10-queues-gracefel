@@ -17,6 +17,21 @@ struct game_state dequeue(struct queue *q) {
     state = deserialize(remove_from_tail(&(q->data))); 
     return state;
 }
+///////////////////////////////////////////////////
+/* my own function
+    inputs: struct queue q
+            uint64_t encoded
+    outputs: int 1 if encoded is in q
+            int 0 if not
+*//////////////////////////////////////////////////
+int repetition (struct queue q, uint64_t encoded){
+    struct list_node * n = q.data.head;
+    while (n!=NULL){
+        if(encoded==n->value){return 1;}
+        n = n->next;
+    }
+    return 0;
+}
 
 int number_of_moves(struct game_state start) { 
     struct queue q = { .data.head = NULL };
@@ -47,25 +62,26 @@ int number_of_moves(struct game_state start) {
             // printf("moving down\n");
             struct game_state copy = curr;
             move_down(&copy);
-            enqueue(&q,copy);
+            //check if it's already in the queue
+            if(!repetition(q,serialize(copy))){enqueue(&q,copy);}
         }
         if(curr.empty_row < 3){     
             // printf("moving up\n");
             struct game_state copy = curr;
             move_up(&copy);
-            enqueue(&q,copy);
+            if(!repetition(q,serialize(copy))){enqueue(&q,copy);}
         }
         if (curr.empty_col > 0){
             // printf("moving right\n");
             struct game_state copy = curr;
             move_right(&copy);
-            enqueue(&q,copy);
+            if(!repetition(q,serialize(copy))){enqueue(&q,copy);}
         }
         if(curr.empty_col < 3){     
             // printf("moving left\n");
             struct game_state copy = curr;
             move_left(&copy);
-            enqueue(&q,copy);
+            if(!repetition(q,serialize(copy))){enqueue(&q,copy);}
         }
         
     }
