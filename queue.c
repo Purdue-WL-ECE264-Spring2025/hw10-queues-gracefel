@@ -59,7 +59,7 @@ int number_of_moves(struct game_state start) {
                 }
             }
         }
-        if(start.empty_row > 0){
+        if(curr.empty_row > 0){
             // printf("moving down\n");
             struct game_state copy = curr;
             move_down(&copy);
